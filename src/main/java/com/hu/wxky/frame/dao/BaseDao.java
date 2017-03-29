@@ -1,7 +1,6 @@
 package com.hu.wxky.frame.dao;
 
 import java.beans.PropertyDescriptor;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,12 +10,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +46,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 	
 	protected static final Map<String, ClassSwitchTable> cstCache = new HashMap<String, 
 			ClassSwitchTable>();
-	protected static Boolean showSql;
+	//protected static Boolean showSql;
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	//private static final Logger logger = LoggerFactory.getLogger(DbTools.class);
 	
@@ -161,7 +158,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			success = true;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	@Override
@@ -240,7 +237,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return i;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), paramArr);
+            DbTools.showSql(sql, success, (int)(t2-t1), paramArr);
         }
 	}
 	@Override
@@ -259,7 +256,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return i;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	@Override
@@ -315,7 +312,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return r;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), idValue);
+            DbTools.showSql(sql, success, (int)(t2-t1), idValue);
         }
 	}
 	@Override
@@ -337,7 +334,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return r;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), id);
+            DbTools.showSql(sql, success, (int)(t2-t1), id);
         }
 	}
 	@Override
@@ -370,7 +367,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return e;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), id);
+            DbTools.showSql(sql, success, (int)(t2-t1), id);
         }
 	}
 	@Override
@@ -406,7 +403,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return e;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), id);
+            DbTools.showSql(sql, success, (int)(t2-t1), id);
         }
 	}
 	@Override
@@ -441,7 +438,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 	        return e;
 	    } finally {
 	        long t2 = System.currentTimeMillis();
-	        showSql(sql, success, (int)(t2-t1), value);
+	        DbTools.showSql(sql, success, (int)(t2-t1), value);
 	    }
 	}
 
@@ -465,7 +462,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return list;
         } finally {
 	        long t2 = System.currentTimeMillis();
-	        showSql(sql, success, (int)(t2-t1), value);
+	        DbTools.showSql(sql, success, (int)(t2-t1), value);
 	    }
 	}
 
@@ -510,7 +507,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
             return list;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1));
+            DbTools.showSql(sql, success, (int)(t2-t1));
         }
 	}
 	@Override
@@ -534,7 +531,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
             return list;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), paramArr);
+            DbTools.showSql(sql, success, (int)(t2-t1), paramArr);
         }
 	}
 	@Override
@@ -555,7 +552,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return list;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), paramArr);
+            DbTools.showSql(sql, success, (int)(t2-t1), paramArr);
         }
 	}
 	@Override
@@ -574,7 +571,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return c;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), paramArr);
+            DbTools.showSql(sql, success, (int)(t2-t1), paramArr);
         }
 	}
 	@Override
@@ -598,7 +595,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return list;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	
@@ -623,7 +620,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
         	return e;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	@Override
@@ -636,7 +633,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
             return e;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	@Override
@@ -651,7 +648,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 	        return e;
 	    } finally {
 	        long t2 = System.currentTimeMillis();
-	        showSql(sql, success, (int)(t2-t1), paramArr);
+	        DbTools.showSql(sql, success, (int)(t2-t1), paramArr);
 	    }
 	}
 	@Override
@@ -664,7 +661,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
             return r;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	@Override
@@ -677,7 +674,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
             return r;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	@Override
@@ -724,7 +721,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return list;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), paramArr);
+            DbTools.showSql(sql, success, (int)(t2-t1), paramArr);
         }
 	}
 	
@@ -737,7 +734,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
     		return list;
 	    } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	
@@ -750,7 +747,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
     		return list;
 	    } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	
@@ -766,7 +763,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 	        return list;
 	    } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	/**
@@ -784,7 +781,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 	        return e;
 	    } finally {
 	        long t2 = System.currentTimeMillis();
-	        showSql(sql, success, (int)(t2-t1), params);
+	        DbTools.showSql(sql, success, (int)(t2-t1), params);
 	    }
 	}
 	public Map<String, Object> queryForMap(String sql, Object... params){
@@ -800,7 +797,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 	        return e;
 	    } finally {
 	        long t2 = System.currentTimeMillis();
-	        showSql(sql, success, (int)(t2-t1), params);
+	        DbTools.showSql(sql, success, (int)(t2-t1), params);
 	    }
 	}
 	
@@ -820,48 +817,6 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 	public Integer getLastIdSqlServer() {
 		Integer i = queryObject(Integer.class, "SELECT SCOPE_IDENTITY() As id");
 		return i;
-	}
-	
-	protected void showSql(String sql, boolean success, int costTimes, Object... params) {
-		if(!success || (costTimes>watchMinExecTime)){
-			logger.warn(String.format(SHOW_SQL_TEMPLATE, 
-	        		DbTools.fullSql(sql, params), success, costTimes));
-		}else{
-			String prefx = sql.substring(0, 8).trim().toUpperCase();
-			if(prefx.startsWith(SELECT)){
-				if(isShowSql() && logger.isDebugEnabled()){
-			        logger.debug(String.format(SHOW_SQL_TEMPLATE, 
-			        		DbTools.fullSql(sql, params), success, costTimes));
-			    }
-			}else{
-				logger.info(String.format(SHOW_SQL_TEMPLATE, 
-		        		DbTools.fullSql(sql, params), success, costTimes));
-			}
-			
-		}
-	    
-	}
-	
-	protected Boolean isShowSql() {
-	    if(null==showSql){
-	        //String str = SystemEnv.getPropertie("show.sql"); 
-	        String str = "false";
-	    	InputStream fis = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("conf/config.properties");
-			Properties properties = new Properties();
-			try {
-				properties.load(fis);
-				str = properties.getProperty("show.sql");
-			} catch (Exception e) {
-				logger.error(e.toString());
-			}
-	        if(null==str || !str.equalsIgnoreCase("true")){
-	            showSql = Boolean.FALSE;
-	        }else{
-	            showSql = Boolean.TRUE;
-	        }
-	    }
-	    return showSql;
 	}
 	
 	protected void beanToSqlInsert(Object bean, StringBuilder sb, List<Object> paramsList){
@@ -991,7 +946,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 		String from = " FROM " + ctt.getTableName();
 		StringBuilder whereSB = new StringBuilder();
 		PropertyColumn[] pcArr = ctt.getProColArr();
-		if (ArrayUtils.isEmpty(pcArr)) {
+		if (pcArr == null || pcArr.length == 0) {
 			throw new RuntimeException(obj.getClass().getName() + " has not property");
 		}
 		int count = 0;
@@ -1061,7 +1016,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return r;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params.toArray());
+            DbTools.showSql(sql, success, (int)(t2-t1), params.toArray());
         }
 	}
 	
@@ -1089,7 +1044,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return i;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), id);
+            DbTools.showSql(sql, success, (int)(t2-t1), id);
         }
 	}
 
@@ -1134,7 +1089,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return e;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), paramArr);
+            DbTools.showSql(sql, success, (int)(t2-t1), paramArr);
         }
 	}
 
@@ -1154,7 +1109,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
 			return list;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 
@@ -1178,7 +1133,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
         	return e;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 
@@ -1192,7 +1147,7 @@ public class BaseDao extends JdbcDaoSupport implements IBaseDao {
             return r;
         } finally {
             long t2 = System.currentTimeMillis();
-            showSql(sql, success, (int)(t2-t1), params);
+            DbTools.showSql(sql, success, (int)(t2-t1), params);
         }
 	}
 	

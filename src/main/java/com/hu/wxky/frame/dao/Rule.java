@@ -1,14 +1,11 @@
 package com.hu.wxky.frame.dao;
 
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.apache.log4j.Logger;
+import com.hu.wxky.frame.util.PropertyConfigurer;
+import com.hu.wxky.frame.util.SpringBeanHelper;
 
 public class Rule {
-	protected static final Logger log = Logger.getLogger(Rule.class);
 	/**
-	 * 默认：DB表、字段命名与java类、属性命名大小写相同
+	 * 默认：DB表、字段命名与java类、属性命名大小写
 	 */
 	public static RuleCharEnum DBChar = RuleCharEnum.LOW;
 	/**
@@ -21,15 +18,11 @@ public class Rule {
 	public static Boolean uppOmit = Boolean.TRUE;
 
 	static {
-		try {
-			InputStream fis = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("conf/config.properties");
-			Properties properties = new Properties();
-			properties.load(fis);
-			// 读取配置的上面的几个属性值
-			String loadDBChar = properties.getProperty("DBChar");
-			String loadDBSpe = properties.getProperty("DBSpe");
-			String loadUppOpen = properties.getProperty("uppOmit");
+		PropertyConfigurer pc = SpringBeanHelper.getBean(PropertyConfigurer.class);
+		if(null!=pc){
+			String loadDBChar = pc.getProperty("DBChar");
+			String loadDBSpe = pc.getProperty("DBSpe");
+			String loadUppOpen = pc.getProperty("uppOmit");
 			if (loadDBChar != null
 					&& ("EQU".equalsIgnoreCase(loadDBChar)
 							|| "LOW".equalsIgnoreCase(loadDBChar) || "UPP"
@@ -45,11 +38,7 @@ public class Rule {
 							.equalsIgnoreCase(loadUppOpen))) {
 				uppOmit = new Boolean(loadUppOpen);
 			}
-
-		} catch (Exception e) {
-			log.error("加载rule.properties文件失败", e);
 		}
-
 	}
 
 	private Rule() {

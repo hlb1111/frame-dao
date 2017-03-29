@@ -30,6 +30,8 @@ import org.slf4j.LoggerFactory;
 import com.hu.wxky.frame.annotation.ColumnField;
 import com.hu.wxky.frame.annotation.IgnoreProperty;
 import com.hu.wxky.frame.util.ClassUtil;
+import com.hu.wxky.frame.util.PropertyConfigurer;
+import com.hu.wxky.frame.util.SpringBeanHelper;
 /**
  * 数据库操作常用功能封装，需要依赖apache commons DbUtils
  * @author hulb
@@ -40,13 +42,16 @@ public class DbTools {
 	protected static final String WHERE = " WHERE ";
 	protected static final String EQUALS = "=?";
 	protected static final String QUOT = "'";
+	
 	/**
 	 * value = yyyy-MM-dd HH:mm:ss
 	 */
 	public static final String FULL_STAND_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	/**强制显示日志的最小SQL语句执行时间**/
+	public static int watchMinExecTime = 100;
 	
 	public static final Map<Class<?>, Object> primitiveDefaults = new HashMap<Class<?>, Object>();
-	
+	public static Boolean _show_Sql;
 	static {
         primitiveDefaults.put(Integer.TYPE, Integer.valueOf(0));
         primitiveDefaults.put(Short.TYPE, Short.valueOf((short) 0));
@@ -524,4 +529,54 @@ public class DbTools {
 		String result = sdf.format(date);
 		return result;
 	}
+    
+    public static void showSql(String sql, boolean success, int costTimes, Object... params) {
+		if(!success || (costTimes>watchMinExecTime)){
+			logger.warn(String.format(IBaseDao.SHOW_SQL_TEMPLATE, 
+	        		DbTools.fullSql(sql, params), success, costTimes));
+		}else{
+			String prefx = sql.substring(0, 8).trim().toUpperCase();
+			if(prefx.startsWith(IBaseDao.SELECT)){
+				if(isShowSql() && logger.isDebugEnabled()){
+			        logger.debug(String.format(IBaseDao.SHOW_SQL_TEMPLATE, 
+			        		DbTools.fullSql(sql, params), success, costTimes));
+			    }
+			}else{
+				logger.info(String.format(IBaseDao.SHOW_SQL_TEMPLATE, 
+		        		fullSql(sql, params), success, costTimes));
+			}
+			
+		}
+	}
+    
+    public static boolean isShowSql(){
+    	if(null==_show_Sql){
+    		PropertyConfigurer pc = SpringBeanHelper.getBean(PropertyConfigurer.class);
+    		String str = null;
+    		if(null==pc){
+    			str = "false";
+    		}else{
+    			str = pc.getProperty("show.sql", "false");
+    		}
+	        if(null==str || !str.equalsIgnoreCase("true")){
+	            _show_Sql = Boolean.FALSE;
+	        }else{
+	            _show_Sql = Boolean.TRUE;
+	        }
+	    }
+	    return _show_Sql;
+    }
+    
+    public static boolean isBlank(final CharSequence cs) {
+    	int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (Character.isWhitespace(cs.charAt(i)) == false) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

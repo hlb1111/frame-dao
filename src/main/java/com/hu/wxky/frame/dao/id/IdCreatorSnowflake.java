@@ -1,8 +1,12 @@
 package com.hu.wxky.frame.dao.id;
-
+/**
+ * Twitter 主键生成算法：雪花算法
+ * @author hulb
+ *
+ */
 public class IdCreatorSnowflake implements IdCreator{
 	
-	/** 开始时间截 (2015-01-01) */
+	/** 开始时间截 */
     private final long twepoch = 1420041600000L;
 
     /** 机器id所占的位数 */

@@ -4,7 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 有个类的一些常规方法
@@ -13,11 +14,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("rawtypes")
 public class ClassUtil {
-	protected static final Logger log = Logger.getLogger(ClassUtil.class);
-	/**
-	 * model类的默认id属性的命名
-	 */
-	public static final String ID = "id";
+	protected static final Logger log = LoggerFactory.getLogger(ClassUtil.class);
 
 	/**
 	 * model类的默认get方法前缀

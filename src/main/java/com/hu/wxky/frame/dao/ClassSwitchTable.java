@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +34,16 @@ import com.hu.wxky.frame.util.SpringBeanHelper;
  *
  */
 public class ClassSwitchTable<E> {
+	/**数据库关键字，在拼装sql时需要加上``才能正常执行*/
 	private static final String SYNTAX = "order;option;";
 	
 	private static final Logger log = LoggerFactory.getLogger(ClassSwitchTable.class);
-	private static String baseBeanName = BaseBean.class.getName();
-	private static String objectName = Object.class.getName();
+	private static String BASE_BEAN_NAME = BaseBean.class.getName();
+	private static String OBJECT_NAME = Object.class.getName();
+	/**
+	 * 表默认主键字段
+	 */
+	public static final String DEFAULT_PRIMARY_ID_COLUMN = "id";
 	
 	/**
 	 * Key = 属性名； Value=字段名
@@ -75,7 +79,7 @@ public class ClassSwitchTable<E> {
 		for(Annotation a : clsAnnoArr){
 			if(a.annotationType().isAssignableFrom(TableField.class)){
 				String tbName = ((TableField)a).value();
-				if(!StringUtils.isBlank(tbName)){
+				if(!DbTools.isBlank(tbName)){
 					tableName = tbName;
 					hasTableNameAnno = true;
 				}
@@ -89,13 +93,12 @@ public class ClassSwitchTable<E> {
 			}
 		}
 		//解析属性
-		
 		List<PropertyColumn> pcList = new ArrayList<PropertyColumn>();
 		
 		//bean类继承最多五级
 		for(int i=0; i<5; i++){
 			String clsName = cla.getName();
-			if(clsName.equals(baseBeanName) || clsName.equals(objectName)){
+			if(clsName.equals(BASE_BEAN_NAME) || clsName.equals(OBJECT_NAME)){
 				break;
 			}else{
 				Field[] fs = cla.getDeclaredFields();
@@ -103,9 +106,17 @@ public class ClassSwitchTable<E> {
 			}
 			cla = cla.getSuperclass();
 		}
-		
+		if(null==this.idName){
+			//没有注解PrimaryKey 看看有没有id字段
+			for(PropertyColumn pc : pcList){
+				if(pc.getColName().equals(DEFAULT_PRIMARY_ID_COLUMN)){
+					this.idName = pc.getProName();
+					this.generateKey = GenerateKey.IDENTITY;
+					break;
+				}
+			}
+		}
 		proColArr = new PropertyColumn[pcList.size()];
-		//pcList.toArray(proColArr);
 		for(int i=0; i<proColArr.length; i++){
 			proColArr[i] = pcList.get(i);
 		}
@@ -125,7 +136,6 @@ public class ClassSwitchTable<E> {
 			for(int i=0; i<props.length; i++) {
 				String dbName = classTypeMap.get(props[i].getName());
 				if(null!=dbName){
-					//columnsMap.put(dbName, props[i]);
 					columnsLowerMap.put(dbName.toLowerCase(), props[i]);
 				}
 			}
@@ -147,7 +157,6 @@ public class ClassSwitchTable<E> {
 					DBName = DbTools.strClassToDB(fe.getName());
 				}
 				classTypeMap.put(FeName, DBName);
-				//columnsMap.put(DBName, FeName);
 				PropertyColumn pc = new PropertyColumn();
 				pc.setColName(DBName);
 				pc.setProName(FeName);
@@ -185,15 +194,13 @@ public class ClassSwitchTable<E> {
 			if(null!=pk){
 				idName = fe.getName();
 				if(null!=pk.refObj() && !pk.refObj().trim().isEmpty()){
-					refObj = SpringBeanHelper.getBean(IdCreator.class, pk.refObj().trim());
+					refObj = (IdCreator)SpringBeanHelper.getBean(pk.refObj().trim());
 				}
 				generateKey = pk.generateKey();	
 			}
 		}
 		return pcList;
 	}
-	
-	
 
 	/**
 	 * 获得类属性名->表字段的名称对应map：<属性名,表列名>
@@ -201,15 +208,6 @@ public class ClassSwitchTable<E> {
 	 */
 	public Map<String, String> getClassTypeMap() {
 		return classTypeMap;
-	}
-
-	/**
-	 * 获得表字段的名称->类属性名对应map：<表列名,属性对象描述>
-	 * @return
-	 */
-	@Deprecated
-	public Map<String, PropertyDescriptor> getColumnsMap() {
-		return columnsLowerMap;
 	}
 
 	/**
@@ -238,7 +236,7 @@ public class ClassSwitchTable<E> {
 	public GenerateKey getGenerateKey() {
 		return generateKey;
 	}
-	
+	/**返回生成主键的策略*/
 	public IdCreator getRefObj() {
 		return refObj;
 	}
