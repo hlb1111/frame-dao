@@ -21,11 +21,12 @@
        		"
        default-autowire="byName">
 	<bean class="com.hu.wxky.frame.util.PropertyConfigurer"> 
-		 <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_FALLBACK" />
+		 <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+         <property name="ignoreResourceNotFound" value="true" />
 		 <property name="locations">
-		 	<array> 
+		 	<list> 
 		 		<value>classpath:conf/config.properties</value>
-		 	</array>
+		 	</list>
 		 </property>
 	</bean>
 	

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 在数据库持久化时忽略该属性
- * @author xiaoxiaoyang
+ * @author hulb
  *
  */
 @Documented
