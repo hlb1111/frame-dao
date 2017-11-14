@@ -26,6 +26,7 @@ public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
     }
 
     public Object setProperty(String key, String value) {
+    	
         return this.props.setProperty(key, value);
     }
 }
