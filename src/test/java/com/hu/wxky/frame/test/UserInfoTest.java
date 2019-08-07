@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hu.wxky.frame.bean.PageVo;
-import com.hu.wxky.frame.test.bean.UserInfo;
+import com.hu.wxky.frame.test.bean.SysUser;
 import com.hu.wxky.frame.test.dao.IUserInfoDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,11 +27,11 @@ public class UserInfoTest extends AbstractJUnit4SpringContextTests {
 	public void saveTest(){
 		long t1 = System.currentTimeMillis();
 		for(int i=0; i<1000; i++){
-			UserInfo user = new UserInfo();
+			SysUser user = new SysUser();
 			user.setCreated(new Date());
 			user.setLoginAccount("test" + new Random().nextInt(100000));
 			user.setUsername("王完"+ new Random().nextInt(100000));
-			user.setLoginPwd("g"+ new Random().nextInt(100000));
+			user.setLoginPassword("g"+ new Random().nextInt(100000));
 			user.setStatus(1);
 			userInfoDao.save(user);
 		}
@@ -43,7 +43,7 @@ public class UserInfoTest extends AbstractJUnit4SpringContextTests {
 		long t1 = System.currentTimeMillis();
 		String account = "root";
 		for(int i=0; i<5; i++){
-			UserInfo info = userInfoDao.getByAccount(account, "id", "username", "loginPwd", "status");
+			SysUser info = userInfoDao.getByAccount(account, "id", "username", "loginPwd", "status");
 			System.out.println(info);
 		}
 		long t2 = System.currentTimeMillis();
@@ -52,32 +52,32 @@ public class UserInfoTest extends AbstractJUnit4SpringContextTests {
 	}
 	@Test
 	public void updateTest(){
-		UserInfo info = userInfoDao.getById(UserInfo.class, 296575103221764096L);
+		SysUser info = userInfoDao.getById(SysUser.class, 1);
 		
 		//更新某些字段
-		UserInfo tmp = new UserInfo();
+		SysUser tmp = new SysUser();
 		tmp.setId(info.getId());
 		tmp.setStatus(-1);
 		userInfoDao.update(tmp);
 	}
 	@Test
 	public void queryByObj(){
-		UserInfo where = new UserInfo();
+		SysUser where = new SysUser();
 		where.setStatus(1);
 		where.setLoginAccount("root");
-		List<UserInfo> list = userInfoDao.query(where);
+		List<SysUser> list = userInfoDao.query(where);
 		System.out.println(list.size());
 	}
 	@Test
 	public void getPage(){
-		PageVo<UserInfo> page = new PageVo<UserInfo>();
+		PageVo<SysUser> page = new PageVo<SysUser>();
 		userInfoDao.getPage(1, page);
-		List<UserInfo> first = page.getList();
+		List<SysUser> first = page.getList();
 		System.out.println(first);
 		
 		page.setPage(2);
 		userInfoDao.getPage(1, page);
-		List<UserInfo> two = page.getList();
+		List<SysUser> two = page.getList();
 		System.out.println(two);
 		
 	}

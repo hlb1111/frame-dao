@@ -6,7 +6,7 @@ import com.hu.wxky.frame.annotation.PrimaryKey;
 import com.hu.wxky.frame.bean.BaseBean;
 import com.hu.wxky.frame.dao.GenerateKey;
 
-public class UserInfo extends BaseBean {
+public class SysUser extends BaseBean {
 
 	private static final long serialVersionUID = -2190047122624232714L;
 	@PrimaryKey(generateKey=GenerateKey.ASSIGNED, refObj="idSnowflake")
@@ -16,7 +16,7 @@ public class UserInfo extends BaseBean {
 	
 	private String loginAccount;
 	
-	private String loginPwd;
+	private String loginPassword;
 	
 	private Date created;
 	
@@ -46,12 +46,13 @@ public class UserInfo extends BaseBean {
 		this.loginAccount = loginAccount;
 	}
 
-	public String getLoginPwd() {
-		return loginPwd;
+
+	public String getLoginPassword() {
+		return loginPassword;
 	}
 
-	public void setLoginPwd(String loginPwd) {
-		this.loginPwd = loginPwd;
+	public void setLoginPassword(String loginPassword) {
+		this.loginPassword = loginPassword;
 	}
 
 	public Date getCreated() {
